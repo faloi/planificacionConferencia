@@ -3,9 +3,11 @@
  */
 package edu.unq.objetos3.validation
 
-import org.eclipse.xtext.validation.Check
 import edu.unq.objetos3.planificacionConferencia.Charla
+import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
+import org.eclipse.xtext.validation.Check
+import edu.unq.objetos3.planificacionConferencia.Actividad
 
 //import org.eclipse.xtext.validation.Check
 
@@ -15,13 +17,42 @@ import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
  * see http://www.eclipse.org/Xtext/documentation.html#validation
  */
 class PlanificacionConferenciaValidator extends AbstractPlanificacionConferenciaValidator {
-
 	@Check
 	def checkDuracionMinimaCharla(Charla charla) {
-		if (charla.duracion < 30) {
-			error('Una charla no puede durar menos de 30 minutos', 
-					PlanificacionConferenciaPackage.Literals.CHARLA__DURACION, 
-					'duracionMinimaCharla')
+		checkDuracionMinima(charla, 30)
+	}
+
+	@Check
+	def checkDuracionMinimaDebate(Debate debate) {
+		checkDuracionMinima(debate, 60)
+	}
+
+		
+	@Check
+	def checkAlMenosDosOradoresEnDebate(Debate debate) {
+		if (debate.oradores.length < 2) {
+			error('Un debate tiene que tener al menos 2 oradores', 
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES, 
+					'cantidadOradoresDebate')
 		}
 	}
+	
+	@Check
+	def checkOradoresDeDistintaOrganizacionEnDebate(Debate debate) {
+		val cantidadOrganizaciones = debate.oradores.map[organizacion].toSet.length
+		
+		if (cantidadOrganizaciones < debate.oradores.length) {
+			error('Los oradores tienen que ser de distintas organizaciones', 
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES, 
+					'organizacionOradoresDebate')
+		}
+	}
+	
+	private def checkDuracionMinima(Actividad actividad, int duracionMinima) {
+		if (actividad.duracion < duracionMinima) {
+			error('''No puede durar menos de «duracionMinima» minutos''', 
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION, 
+					'''duracionMinima«actividad.class.name»''')
+		}
+	}	
 }

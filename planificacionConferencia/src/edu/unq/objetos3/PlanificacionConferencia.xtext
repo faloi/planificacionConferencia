@@ -3,10 +3,19 @@ grammar edu.unq.objetos3.PlanificacionConferencia with org.eclipse.xtext.common.
 generate planificacionConferencia "http://www.unq.edu/objetos3/PlanificacionConferencia"
 
 Model:
-	charlas+=Charla*;
+	actividades+=Actividad*
+;
+
+Actividad:
+	Charla | Debate	
+;
+
+Debate:
+	'Debate' titulo=STRING '(' track=STRING ')' 'por' (oradores+=Orador)+ 'durante' duracion=INT
+;
 	
 Charla:
-	'Charla' titulo=STRING 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Charla' titulo=STRING '(' track=STRING ')' 'por' (oradores+=Orador)+ 'durante' duracion=INT
 ;
 
 Orador:
