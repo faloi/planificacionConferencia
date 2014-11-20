@@ -4,6 +4,7 @@
 package edu.unq.objetos3.validation
 
 import static extension edu.unq.objetos3.BloqueExtensions.*
+import static extension edu.unq.objetos3.TiempoExtensions.*
 import static extension edu.unq.objetos3.ActividadExtensions.*
 import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Almuerzo
@@ -62,6 +63,12 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 			error('''Todas las charlas del bloque deben ser del mismo track, pero hay de: «bloque.tracks.join(", ")»''',
 				PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
 	}
+	
+	@Check
+	def checkBloqueNoDuraMasDeDosHoras(Bloque bloque) {
+		if (bloque.duracion > 120) 
+			error('No puede durar más de 2 horas', PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
+	}	
 	
 	protected def checkDuracionMinima(Descanso descanso, int duracionMinima) {
 		if (descanso.duracion.enMinutos < duracionMinima) {

@@ -7,8 +7,4 @@ class ActividadExtensions {
 	static def organizaciones(Actividad actividad) {
 		actividad.oradores.map[organizacion].toSet
 	}
-	
-	static def enMinutos(Tiempo tiempo) {
-		tiempo.horas * 60 + tiempo.minutos
-	}
 }

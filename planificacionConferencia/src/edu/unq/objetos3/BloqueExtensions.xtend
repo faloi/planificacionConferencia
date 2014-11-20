@@ -1,6 +1,9 @@
 package edu.unq.objetos3
 
 import edu.unq.objetos3.planificacionConferencia.Bloque
+import static extension edu.unq.objetos3.TiempoExtensions.*
+import edu.unq.objetos3.planificacionConferencia.Tiempo
+import edu.unq.objetos3.planificacionConferencia.impl.TiempoImpl
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {
@@ -10,4 +13,8 @@ class BloqueExtensions {
 	static def tracks(Bloque bloque) {
 		bloque.actividadesValidas.map[track].toSet
 	}	
+	
+	static def duracion(Bloque bloque) {
+		bloque.actividadesValidas.fold(0, [acum, elem | acum + elem.duracion.enMinutos])
+	}
 }
