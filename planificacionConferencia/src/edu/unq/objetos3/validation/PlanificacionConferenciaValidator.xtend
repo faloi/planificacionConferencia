@@ -64,7 +64,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	}
 	
 	protected def checkDuracionMinima(Descanso descanso, int duracionMinima) {
-		if (descanso.duracion < duracionMinima) {
+		if (descanso.duracion.enMinutos < duracionMinima) {
 			error('''No puede durar menos de «duracionMinima» minutos''', 
 					PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
 		}

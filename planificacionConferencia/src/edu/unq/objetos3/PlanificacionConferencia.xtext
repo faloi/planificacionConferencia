@@ -48,11 +48,11 @@ Bloque:
 ;
 
 Almuerzo:
-	'almuerzo' duracion=INT
+	'almuerzo' duracion=Tiempo
 ;
 
 Break:
-	'break' duracion=INT
+	'break' duracion=Tiempo
 ;
 
 terminal NOMBRE_ESPACIO: '*' -> '~';
