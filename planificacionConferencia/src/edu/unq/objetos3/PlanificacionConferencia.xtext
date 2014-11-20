@@ -24,8 +24,28 @@ Orador:
 ;
 
 Espacio:
-	nombre=NOMBRE_ESPACIO capacidad=INT ":"
-		idsCharlas+=ID (','idsCharlas+=ID)*  	
+	nombre=NOMBRE_ESPACIO capacidad=INT ":" actividades+=ActividadesPorEspacio+
+;
+
+ActividadesPorEspacio:
+	Bloque | Descanso
+;
+
+Descanso:
+	Break | Almuerzo
+;
+
+Bloque:
+	'[' idsCharlas+=ID (','idsCharlas+=ID)* ']'
+;
+
+
+Almuerzo:
+	'almuerzo' duracion=INT
+;
+
+Break:
+	'break' duracion=INT
 ;
 
 terminal NOMBRE_ESPACIO: '*' -> '~';

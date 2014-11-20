@@ -11,6 +11,10 @@ import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Model
 import edu.unq.objetos3.planificacionConferencia.Espacio
 import org.eclipse.emf.common.util.EList
+import edu.unq.objetos3.planificacionConferencia.Bloque
+import edu.unq.objetos3.planificacionConferencia.Descanso
+import edu.unq.objetos3.planificacionConferencia.Almuerzo
+import edu.unq.objetos3.planificacionConferencia.Break
 
 //import org.eclipse.xtext.validation.Check
 
@@ -28,6 +32,16 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	@Check
 	def checkDuracionMinimaDebate(Debate debate) {
 		checkDuracionMinima(debate, 60)
+	}
+	
+	@Check
+	def checkDuracionMinimaBreak(Almuerzo almuerzo) {
+		checkDuracionMinima(almuerzo, 45)
+	}
+
+	@Check
+	def checkDuracionMinimaBreak(Break break) {
+		checkDuracionMinima(break, 15)
 	}
 
 	@Check
@@ -51,20 +65,29 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	@Check
 	def checkExistenLasActividades(Model model) {
 		model.espacios.forEach [espacio |
-			checkExistenTodasLasCharlas(espacio, model.actividades)
+			checkExistenTodasLasCharlas(espacio.actividades.filter(Bloque), model.actividades)
 		]
 	}
 	
-	private def checkExistenTodasLasCharlas(Espacio espacio, EList<Actividad> actividades) {
-		val idsInexistentes = espacio.idsCharlas.filter [idCharla |
-			!actividades.exists[id == idCharla]
+	private def checkExistenTodasLasCharlas(Iterable<Bloque> bloques, EList<Actividad> actividades) {
+		bloques.forEach [bloque |
+			val idsInexistentes = bloque.idsCharlas.filter [idCharla |
+				!actividades.exists[id == idCharla]
+			]
+			
+			if (!idsInexistentes.empty)
+				error('''No existen las charlas: «idsInexistentes.join(", ")»''',
+					bloque,
+					PlanificacionConferenciaPackage.Literals.BLOQUE__IDS_CHARLAS)
 		]
-		
-		if (!idsInexistentes.empty)
-			error('''No existen las charlas: «idsInexistentes.join(", ")»''',
-				espacio,
-				PlanificacionConferenciaPackage.Literals.ESPACIO__IDS_CHARLAS)
 	}
+
+	private def checkDuracionMinima(Descanso descanso, int duracionMinima) {
+		if (descanso.duracion < duracionMinima) {
+			error('''No puede durar menos de «duracionMinima» minutos''', 
+					PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
+		}
+	}	
 	
 	private def checkDuracionMinima(Actividad actividad, int duracionMinima) {
 		if (actividad.duracion < duracionMinima) {
