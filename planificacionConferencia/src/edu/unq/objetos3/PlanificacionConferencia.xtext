@@ -13,13 +13,13 @@ Actividad:
 
 Debate:
 	'Debate ~ ' capacidadMaxima=INT ':' 
-		id=TAG titulo=STRING track=TEXTO 
+		'#'name=ID titulo=STRING track=TEXTO 
 		(oradores+=Orador)+ 'durante' duracion=INT
 ;
 	
 Charla:
 	'Charla ~ ' capacidadMaxima=INT ':' 
-		id=TAG titulo=STRING track=TEXTO 
+		'#'name=ID titulo=STRING track=TEXTO 
 		(oradores+=Orador)+ 'durante' duracion=INT	
 ;
 
@@ -40,9 +40,8 @@ Descanso:
 ;
 
 Bloque:
-	'[' idsActividades+=TAG (','idsActividades+=TAG)* ']'
+	'[' actividades+=[Actividad] (','actividades+=[Actividad])* ']'
 ;
-
 
 Almuerzo:
 	'almuerzo' duracion=INT
@@ -54,4 +53,3 @@ Break:
 
 terminal NOMBRE_ESPACIO: '*' -> '~';
 terminal TEXTO: '(' -> ')';
-terminal TAG: '#'ID;
