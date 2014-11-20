@@ -11,13 +11,15 @@ Actividad:
 ;
 
 Debate:
-	'Debate' titulo=STRING '(' track=STRING ')' 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Debate' titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
 ;
 	
 Charla:
-	'Charla' titulo=STRING '(' track=STRING ')' 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Charla' titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
 ;
 
 Orador:
-	nombre=STRING 'de' organizacion=STRING
+	nombre=STRING '-' organizacion=STRING
 ;
+
+terminal TEXTO: '(' -> ')';
