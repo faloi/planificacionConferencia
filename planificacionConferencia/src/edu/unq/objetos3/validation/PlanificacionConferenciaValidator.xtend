@@ -8,6 +8,9 @@ import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
 import org.eclipse.xtext.validation.Check
 import edu.unq.objetos3.planificacionConferencia.Actividad
+import edu.unq.objetos3.planificacionConferencia.Model
+import edu.unq.objetos3.planificacionConferencia.Espacio
+import org.eclipse.emf.common.util.EList
 
 //import org.eclipse.xtext.validation.Check
 
@@ -27,13 +30,11 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 		checkDuracionMinima(debate, 60)
 	}
 
-		
 	@Check
 	def checkAlMenosDosOradoresEnDebate(Debate debate) {
 		if (debate.oradores.length < 2) {
 			error('Un debate tiene que tener al menos 2 oradores', 
-					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES, 
-					'cantidadOradoresDebate')
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES) 
 		}
 	}
 	
@@ -43,16 +44,32 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 		
 		if (cantidadOrganizaciones < debate.oradores.length) {
 			error('Los oradores tienen que ser de distintas organizaciones', 
-					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES, 
-					'organizacionOradoresDebate')
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES) 
 		}
+	}
+	
+	@Check
+	def checkExistenLasActividades(Model model) {
+		model.espacios.forEach [espacio |
+			checkExistenTodasLasCharlas(espacio, model.actividades)
+		]
+	}
+	
+	private def checkExistenTodasLasCharlas(Espacio espacio, EList<Actividad> actividades) {
+		val idsInexistentes = espacio.idsCharlas.filter [idCharla |
+			!actividades.exists[id == idCharla]
+		]
+		
+		if (!idsInexistentes.empty)
+			error('''No existen las charlas: «idsInexistentes.join(", ")»''',
+				espacio,
+				PlanificacionConferenciaPackage.Literals.ESPACIO__IDS_CHARLAS)
 	}
 	
 	private def checkDuracionMinima(Actividad actividad, int duracionMinima) {
 		if (actividad.duracion < duracionMinima) {
 			error('''No puede durar menos de «duracionMinima» minutos''', 
-					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION, 
-					'''duracionMinima«actividad.class.name»''')
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION) 
 		}
 	}	
 }

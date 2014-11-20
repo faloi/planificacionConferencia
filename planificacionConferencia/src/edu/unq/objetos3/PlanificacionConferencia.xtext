@@ -4,6 +4,7 @@ generate planificacionConferencia "http://www.unq.edu/objetos3/PlanificacionConf
 
 Model:
 	actividades+=Actividad*
+	espacios+=Espacio*
 ;
 
 Actividad:
@@ -22,4 +23,10 @@ Orador:
 	'@'nombre=ID '-' organizacion=STRING
 ;
 
+Espacio:
+	nombre=NOMBRE_ESPACIO capacidad=INT ":"
+		idsCharlas+=ID (','idsCharlas+=ID)*  	
+;
+
+terminal NOMBRE_ESPACIO: '*' -> '~';
 terminal TEXTO: '(' -> ')';
