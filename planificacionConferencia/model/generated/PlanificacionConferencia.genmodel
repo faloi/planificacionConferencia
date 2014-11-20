@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/planificacionConferencia/src-gen" editDirectory="/planificacionConferencia.edit/src"
+    editorDirectory="/planificacionConferencia.editor/src" modelPluginID="planificacionConferencia"
+    forceOverwrite="true" modelName="PlanificacionConferencia" updateClasspath="false"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" complianceLevel="5.0"
+    copyrightFields="false" editPluginID="planificacionConferencia.edit" editorPluginID="planificacionConferencia.editor"
+    runtimeVersion="2.10">
+  <genPackages prefix="PlanificacionConferencia" basePackage="edu.unq.objetos3" disposableProviderFactory="true"
+      fileExtensions="conferencia" ecorePackage="PlanificacionConferencia.ecore#/">
+    <genClasses ecoreClass="PlanificacionConferencia.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PlanificacionConferencia.ecore#//Model/charlas"/>
+    </genClasses>
+    <genClasses ecoreClass="PlanificacionConferencia.ecore#//Charla">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PlanificacionConferencia.ecore#//Charla/titulo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference PlanificacionConferencia.ecore#//Charla/oradores"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PlanificacionConferencia.ecore#//Charla/duracion"/>
+    </genClasses>
+    <genClasses ecoreClass="PlanificacionConferencia.ecore#//Orador">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PlanificacionConferencia.ecore#//Orador/nombre"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute PlanificacionConferencia.ecore#//Orador/organizacion"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
