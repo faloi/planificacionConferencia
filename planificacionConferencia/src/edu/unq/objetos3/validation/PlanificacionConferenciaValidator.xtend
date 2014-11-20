@@ -4,7 +4,6 @@
 package edu.unq.objetos3.validation
 
 import static extension edu.unq.objetos3.BloqueExtensions.*
-import static extension edu.unq.objetos3.TiempoExtensions.*
 import static extension edu.unq.objetos3.ActividadExtensions.*
 import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Almuerzo
@@ -15,8 +14,9 @@ import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.Descanso
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
 import org.eclipse.xtext.validation.Check
-import edu.unq.objetos3.planificacionConferencia.Tiempo
+import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
 import org.eclipse.emf.ecore.EReference
+import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
 
 /**
  * Custom validation rules. 
@@ -74,15 +74,15 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 				PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
 	}	
 	
-	protected def checkDuracionMinima(Descanso descanso, Tiempo duracionMinima) {
+	protected def checkDuracionMinima(Descanso descanso, IntervaloTiempo duracionMinima) {
 		checkDuracionMinima(descanso.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
 	}	
 	
-	protected def checkDuracionMinima(Actividad actividad, Tiempo duracionMinima) {
+	protected def checkDuracionMinima(Actividad actividad, IntervaloTiempo duracionMinima) {
 		checkDuracionMinima(actividad.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION)
 	}
 	
-	protected def checkDuracionMinima(Tiempo duracion, Tiempo duracionMinima, EReference reference) {
+	protected def checkDuracionMinima(IntervaloTiempo duracion, IntervaloTiempo duracionMinima, EReference reference) {
 		if (duracion < duracionMinima)
 			error('''No puede durar menos de «duracionMinima.asString»''', reference)
 	}

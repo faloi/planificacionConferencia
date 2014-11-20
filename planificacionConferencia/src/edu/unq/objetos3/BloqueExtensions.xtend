@@ -1,8 +1,8 @@
 package edu.unq.objetos3
 
 import edu.unq.objetos3.planificacionConferencia.Bloque
-import static extension edu.unq.objetos3.TiempoExtensions.*
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaFactory
+import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {
@@ -14,9 +14,6 @@ class BloqueExtensions {
 	}	
 	
 	static def duracion(Bloque bloque) {
-		bloque.actividadesValidas.fold(
-			PlanificacionConferenciaFactory.eINSTANCE.createTiempo(), 
-			[acum, elem | acum + elem.duracion]
-		)
+		bloque.actividadesValidas.fold(0.minutos) [acum, elem | acum + elem.duracion]
 	}
 }

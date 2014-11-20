@@ -12,18 +12,18 @@ Actividad:
 ;
 
 Debate:
-	'Debate ~' capacidadMaxima=INT '~' duracion=Tiempo 
+	'Debate ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
 		'#'name=ID titulo=STRING track=TEXTO 
 		(oradores+=Orador)+
 ;
 	
 Charla:
-	'Charla ~' capacidadMaxima=INT '~' duracion=Tiempo 
+	'Charla ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
 		'#'name=ID titulo=STRING track=TEXTO 
 		(oradores+=Orador)+
 ;
 
-Tiempo:
+IntervaloTiempo:
 	(horas=INT'h' minutos=INT'm'|horas=INT'h'|minutos=INT'm')
 ;
 
@@ -48,11 +48,11 @@ Bloque:
 ;
 
 Almuerzo:
-	'almuerzo' duracion=Tiempo
+	'almuerzo' duracion=IntervaloTiempo
 ;
 
 Break:
-	'break' duracion=Tiempo
+	'break' duracion=IntervaloTiempo
 ;
 
 terminal NOMBRE_ESPACIO: '*' -> '~';
