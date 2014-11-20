@@ -3,6 +3,8 @@
  */
 package edu.unq.objetos3.validation
 
+import static extension edu.unq.objetos3.BloqueExtensions.*
+import static extension edu.unq.objetos3.ActividadExtensions.*
 import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Almuerzo
 import edu.unq.objetos3.planificacionConferencia.Bloque
@@ -12,9 +14,6 @@ import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.Descanso
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
 import org.eclipse.xtext.validation.Check
-
-//import org.eclipse.xtext.validation.Check
-
 /**
  * Custom validation rules. 
  *
@@ -51,9 +50,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	
 	@Check
 	def checkOradoresDeDistintaOrganizacionEnDebate(Debate debate) {
-		val cantidadOrganizaciones = debate.oradores.map[organizacion].toSet.length
-		
-		if (cantidadOrganizaciones < debate.oradores.length) {
+		if (debate.organizaciones.length < debate.oradores.length) {
 			error('Los oradores tienen que ser de distintas organizaciones', 
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__ORADORES) 
 		}
@@ -61,20 +58,19 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	
 	@Check
 	def checkTodoElBloqueEsDelMismoTrack(Bloque bloque) {
-		val tracks = bloque.actividades.map[track].toSet
-		if (tracks.length > 1) 
-			error('''Todas las charlas del bloque deben ser del mismo track, pero hay de: «tracks.join(", ")»''',
+		if (bloque.tracks.length > 1) 
+			error('''Todas las charlas del bloque deben ser del mismo track, pero hay de: «bloque.tracks.join(", ")»''',
 				PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
 	}
 	
-	private def checkDuracionMinima(Descanso descanso, int duracionMinima) {
+	protected def checkDuracionMinima(Descanso descanso, int duracionMinima) {
 		if (descanso.duracion < duracionMinima) {
 			error('''No puede durar menos de «duracionMinima» minutos''', 
 					PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
 		}
 	}	
 	
-	private def checkDuracionMinima(Actividad actividad, int duracionMinima) {
+	protected def checkDuracionMinima(Actividad actividad, int duracionMinima) {
 		if (actividad.duracion < duracionMinima) {
 			error('''No puede durar menos de «duracionMinima» minutos''', 
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION) 
