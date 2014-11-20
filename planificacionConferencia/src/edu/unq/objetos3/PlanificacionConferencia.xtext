@@ -1,4 +1,4 @@
-grammar edu.unq.objetos3.PlanificacionConferencia with org.eclipse.xtext.common.Terminals
+grammar edu.unq.objetos3.PlanificacionConferencia with org.eclipse.xtext.common.Terminals hidden(WS)
 
 generate planificacionConferencia "http://www.unq.edu/objetos3/PlanificacionConferencia"
 
@@ -12,15 +12,19 @@ Actividad:
 ;
 
 Debate:
-	'Debate ~ ' capacidadMaxima=INT ':' 
+	'Debate ~' capacidadMaxima=INT '~' duracion=Tiempo 
 		'#'name=ID titulo=STRING track=TEXTO 
-		(oradores+=Orador)+ 'durante' duracion=INT
+		(oradores+=Orador)+
 ;
 	
 Charla:
-	'Charla ~ ' capacidadMaxima=INT ':' 
+	'Charla ~' capacidadMaxima=INT '~' duracion=Tiempo 
 		'#'name=ID titulo=STRING track=TEXTO 
-		(oradores+=Orador)+ 'durante' duracion=INT	
+		(oradores+=Orador)+
+;
+
+Tiempo:
+	(horas=INT'h' minutos=INT'm'|horas=INT'h'|minutos=INT'm')
 ;
 
 Orador:

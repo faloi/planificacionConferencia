@@ -71,7 +71,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	}	
 	
 	protected def checkDuracionMinima(Actividad actividad, int duracionMinima) {
-		if (actividad.duracion < duracionMinima) {
+		if (actividad.duracion.enMinutos < duracionMinima) {
 			error('''No puede durar menos de «duracionMinima» minutos''', 
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION) 
 		}
