@@ -12,11 +12,15 @@ Actividad:
 ;
 
 Debate:
-	'Debate' id=TAG titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Debate ~ ' capacidadMaxima=INT ':' 
+		id=TAG titulo=STRING track=TEXTO 
+		(oradores+=Orador)+ 'durante' duracion=INT
 ;
 	
 Charla:
-	'Charla' id=TAG titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Charla ~ ' capacidadMaxima=INT ':' 
+		id=TAG titulo=STRING track=TEXTO 
+		(oradores+=Orador)+ 'durante' duracion=INT	
 ;
 
 Orador:
