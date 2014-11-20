@@ -15,6 +15,9 @@ import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.Descanso
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
 import org.eclipse.xtext.validation.Check
+import edu.unq.objetos3.planificacionConferencia.Tiempo
+import org.eclipse.emf.ecore.EReference
+
 /**
  * Custom validation rules. 
  *
@@ -23,22 +26,22 @@ import org.eclipse.xtext.validation.Check
 class PlanificacionConferenciaValidator extends AbstractPlanificacionConferenciaValidator {
 	@Check
 	def checkDuracionMinimaCharla(Charla charla) {
-		checkDuracionMinima(charla, 30)
+		checkDuracionMinima(charla, 30.minutos)
 	}
 
 	@Check
 	def checkDuracionMinimaDebate(Debate debate) {
-		checkDuracionMinima(debate, 60)
+		checkDuracionMinima(debate, 1.horas)
 	}
 	
 	@Check
 	def checkDuracionMinimaBreak(Almuerzo almuerzo) {
-		checkDuracionMinima(almuerzo, 45)
+		checkDuracionMinima(almuerzo, 45.minutos)
 	}
 
 	@Check
 	def checkDuracionMinimaBreak(Break break) {
-		checkDuracionMinima(break, 15)
+		checkDuracionMinima(break, 15.minutos)
 	}
 
 	@Check
@@ -66,21 +69,21 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	
 	@Check
 	def checkBloqueNoDuraMasDeDosHoras(Bloque bloque) {
-		if (bloque.duracion > 120) 
-			error('No puede durar más de 2 horas', PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
+		if (bloque.duracion > 2.horas) 
+			error('''No puede durar más de 2 horas, pero dura «bloque.duracion.asString»''', 
+				PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
 	}	
 	
-	protected def checkDuracionMinima(Descanso descanso, int duracionMinima) {
-		if (descanso.duracion.enMinutos < duracionMinima) {
-			error('''No puede durar menos de «duracionMinima» minutos''', 
-					PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
-		}
+	protected def checkDuracionMinima(Descanso descanso, Tiempo duracionMinima) {
+		checkDuracionMinima(descanso.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
 	}	
 	
-	protected def checkDuracionMinima(Actividad actividad, int duracionMinima) {
-		if (actividad.duracion.enMinutos < duracionMinima) {
-			error('''No puede durar menos de «duracionMinima» minutos''', 
-					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION) 
-		}
+	protected def checkDuracionMinima(Actividad actividad, Tiempo duracionMinima) {
+		checkDuracionMinima(actividad.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION)
+	}
+	
+	protected def checkDuracionMinima(Tiempo duracion, Tiempo duracionMinima, EReference reference) {
+		if (duracion < duracionMinima)
+			error('''No puede durar menos de «duracionMinima.asString»''', reference)
 	}
 }
