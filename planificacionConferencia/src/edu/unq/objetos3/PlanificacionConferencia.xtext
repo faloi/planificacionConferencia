@@ -12,11 +12,11 @@ Actividad:
 ;
 
 Debate:
-	'Debate' '#'id=ID titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Debate' id=TAG titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
 ;
 	
 Charla:
-	'Charla' '#'id=ID titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
+	'Charla' id=TAG titulo=STRING track=TEXTO 'por' (oradores+=Orador)+ 'durante' duracion=INT
 ;
 
 Orador:
@@ -36,7 +36,7 @@ Descanso:
 ;
 
 Bloque:
-	'[' idsCharlas+=ID (','idsCharlas+=ID)* ']'
+	'[' idsActividades+=TAG (','idsActividades+=TAG)* ']'
 ;
 
 
@@ -50,3 +50,4 @@ Break:
 
 terminal NOMBRE_ESPACIO: '*' -> '~';
 terminal TEXTO: '(' -> ')';
+terminal TAG: '#'ID;

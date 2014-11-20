@@ -15,6 +15,7 @@ import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Descanso
 import edu.unq.objetos3.planificacionConferencia.Almuerzo
 import edu.unq.objetos3.planificacionConferencia.Break
+import java.util.Map
 
 //import org.eclipse.xtext.validation.Check
 
@@ -65,20 +66,42 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	@Check
 	def checkExistenLasActividades(Model model) {
 		model.espacios.forEach [espacio |
-			checkExistenTodasLasCharlas(espacio.actividades.filter(Bloque), model.actividades)
+			checkExistenTodasLasCharlas(espacio.bloques, model.actividades)
+		]
+	}
+	
+	@Check
+	def checkTodoElBloqueEsDelMismoTrack(Model model) {
+		checkTodoElBloqueEsDelMismoTrack(joinBloquesYActividades(model.espacios.map[bloques].flatten, model.actividades))
+	}
+	
+	private def checkTodoElBloqueEsDelMismoTrack(Map<Bloque, Iterable<Actividad>> bloques) {
+		bloques.forEach[bloque, actividades |
+			val tracks = actividades.map[track].toSet
+			if (tracks.length > 1) 
+				error('''Todas las charlas del bloque deben ser del mismo track, pero hay de: «tracks.join(", ")»''',
+					bloque,
+					PlanificacionConferenciaPackage.Literals.BLOQUE__IDS_ACTIVIDADES
+				)
+		]
+	}
+	
+	private def joinBloquesYActividades(Iterable<Bloque> bloques, EList<Actividad> actividades) {
+		bloques.toInvertedMap[bloque | 
+			actividades.filter[bloque.idsActividades.contains(it.id)]
 		]
 	}
 	
 	private def checkExistenTodasLasCharlas(Iterable<Bloque> bloques, EList<Actividad> actividades) {
 		bloques.forEach [bloque |
-			val idsInexistentes = bloque.idsCharlas.filter [idCharla |
+			val idsInexistentes = bloque.idsActividades.filter [idCharla |
 				!actividades.exists[id == idCharla]
 			]
 			
 			if (!idsInexistentes.empty)
 				error('''No existen las charlas: «idsInexistentes.join(", ")»''',
 					bloque,
-					PlanificacionConferenciaPackage.Literals.BLOQUE__IDS_CHARLAS)
+					PlanificacionConferenciaPackage.Literals.BLOQUE__IDS_ACTIVIDADES)
 		]
 	}
 
@@ -94,5 +117,9 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 			error('''No puede durar menos de «duracionMinima» minutos''', 
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__DURACION) 
 		}
-	}	
+	}
+	
+	private def bloques(Espacio espacio) {
+		espacio.actividades.filter(Bloque)
+	}
 }
