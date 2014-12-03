@@ -1,0 +1,30 @@
+/* XPECT_SETUP planificacionConferencia.PlanificacionConferenciaTests END_SETUP */
+
+// XPECT errors --> "No puede durar menos de 60m" at "40m"
+Debate ~ 100 ~ 40m
+#PdR "Hackear la politica" (Otros)
+@gvilarino - "Partido de la Red"
+@liniers - "Amigos del PdR"
+
+Charla ~ 80 ~ 1h 20m
+#tpi "Experiencias de la construcción de una carrera de programación" (Docencia) 
+@fidel - "UNQ"
+@ebonelli - "UNQ"
+
+Charla ~ 150 ~ 40m
+#dementes "De mentes libres" (Docencia) 
+@ferclaverino - "FACTTIC"
+
+Charla ~ 40 ~ 1h
+#java8 "En camino hacia Java 8" (Herramientas y frameworks) 
+@gidecuzzi - "UNQ"
+@lucasg - "10pines"
+
+* Aula magna ~ 200: 
+	[tpi, dementes]
+	break 15m
+	[java8]
+	almuerzo 45m
+	
+* Auditorio ~ 80: 
+	[PdR]
