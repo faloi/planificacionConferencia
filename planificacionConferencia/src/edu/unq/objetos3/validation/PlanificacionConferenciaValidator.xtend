@@ -3,8 +3,6 @@
  */
 package edu.unq.objetos3.validation
 
-import static extension edu.unq.objetos3.BloqueExtensions.*
-import static extension edu.unq.objetos3.ActividadExtensions.*
 import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Almuerzo
 import edu.unq.objetos3.planificacionConferencia.Bloque
@@ -12,10 +10,14 @@ import edu.unq.objetos3.planificacionConferencia.Break
 import edu.unq.objetos3.planificacionConferencia.Charla
 import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.Descanso
-import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
-import org.eclipse.xtext.validation.Check
+import edu.unq.objetos3.planificacionConferencia.Espacio
 import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
+import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.validation.Check
+
+import static extension edu.unq.objetos3.ActividadExtensions.*
+import static extension edu.unq.objetos3.BloqueExtensions.*
 import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
 
 /**
@@ -73,6 +75,46 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 			error('''No puede durar más de 2 horas, pero dura «bloque.duracion.asString»''', 
 				PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
 	}	
+	
+	@Check
+	def checkCantidadAsistentes(Bloque bloque) {
+		val espacio = bloque.espacio
+		
+		bloque.actividadesValidas.forEach [
+			val capacidadAprovechada = bloque.capacidadAprovechadaPor(it) 
+			
+			switch (capacidadAprovechada) {
+				case capacidadAprovechada > 1:
+					error('''
+						Esta actividad necesita espacio para al menos «capacidadMaxima» personas, 
+						pero en «espacio.nombre» solo entran «espacio.capacidad»
+					''', 
+					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
+					bloque.actividades.indexOf(it))
+					
+				case capacidadAprovechada > 0.9:				
+					warning('''
+						Esta actividad espera recibir mas del 90% de la capacidad de «espacio.nombre», 
+						(quizás podría reubicarse en un espacio más grande?)
+					''', 
+					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
+					bloque.actividades.indexOf(it))				
+					
+				case capacidadAprovechada < 0.5:				
+					warning('''
+						Esta actividad espera recibir menos del 50% de la capacidad de «espacio.nombre», 
+						(quizás podría reubicarse en un espacio más chico?)
+					''', 
+					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
+					bloque.actividades.indexOf(it))									
+			}
+		]
+	}
+	
+	@Check
+	def checkTodasLasActividadesEstanEnElSchedule(Actividad actividad) {
+		
+	}		
 	
 	protected def checkDuracionMinima(Descanso descanso, IntervaloTiempo duracionMinima) {
 		checkDuracionMinima(descanso.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
