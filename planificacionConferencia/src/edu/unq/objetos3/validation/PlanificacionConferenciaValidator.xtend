@@ -21,6 +21,7 @@ import static extension edu.unq.objetos3.BloqueExtensions.*
 import static extension edu.unq.objetos3.EspacioExtensions.*
 import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
 import edu.unq.objetos3.planificacionConferencia.Model
+import java.util.Set
 
 /**
  * Custom validation rules. 
@@ -123,6 +124,30 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__NAME)
 		]
 	}		
+	
+	@Check
+	def checkDiversidadDeOrganizacionesEnBloque(Bloque bloque) {
+		bloque.actividadesValidas.forEach [ actividad |
+			val otras = bloque.actividadesValidas.except(actividad)
+			val organizacionesRepetidas = otras.map[it.organizaciones.intersection(actividad.organizaciones)].flatten
+							
+			if (!organizacionesRepetidas.empty) {
+				warning(
+					'''En este bloque ya hay otras actividades de «organizacionesRepetidas.join(", ")»''',
+					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
+					bloque.actividades.indexOf(actividad)
+				)
+			}
+		]
+	}			
+
+	static def <T> intersection(Set<T> one, Set<T> another) {
+		one.filter[another.contains(it)]
+	}
+	
+	static def <T> except(Iterable<T> iterable, T element) {
+		iterable.filter[it != element]
+	}
 	
 	protected def checkDuracionMinima(Descanso descanso, IntervaloTiempo duracionMinima) {
 		checkDuracionMinima(descanso.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
