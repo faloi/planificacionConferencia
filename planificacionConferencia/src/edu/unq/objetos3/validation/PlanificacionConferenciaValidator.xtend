@@ -18,7 +18,9 @@ import org.eclipse.xtext.validation.Check
 
 import static extension edu.unq.objetos3.ActividadExtensions.*
 import static extension edu.unq.objetos3.BloqueExtensions.*
+import static extension edu.unq.objetos3.EspacioExtensions.*
 import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
+import edu.unq.objetos3.planificacionConferencia.Model
 
 /**
  * Custom validation rules. 
@@ -112,8 +114,14 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	}
 	
 	@Check
-	def checkTodasLasActividadesEstanEnElSchedule(Actividad actividad) {
-		
+	def checkTodasLasActividadesEstanEnElSchedule(Model model) {
+		model.actividades.forEach [ actividad |
+			if (!model.espacios.exists[contiene(actividad)])
+				error(
+					"Esta actividad no está planificada!",
+					actividad, 
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__NAME)
+		]
 	}		
 	
 	protected def checkDuracionMinima(Descanso descanso, IntervaloTiempo duracionMinima) {

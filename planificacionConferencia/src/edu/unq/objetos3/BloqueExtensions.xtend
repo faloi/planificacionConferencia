@@ -26,4 +26,8 @@ class BloqueExtensions {
 	static def capacidadAprovechadaPor(Bloque bloque, Actividad actividad) {
 		actividad.capacidadMaxima.floatValue / bloque.espacio.capacidad
 	}
+	
+	static def contiene(Bloque bloque, Actividad actividad) {
+		bloque.actividades.contains(actividad)
+	}
 }

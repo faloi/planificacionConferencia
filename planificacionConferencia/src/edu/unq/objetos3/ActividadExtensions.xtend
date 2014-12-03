@@ -1,7 +1,6 @@
 package edu.unq.objetos3
 
 import edu.unq.objetos3.planificacionConferencia.Actividad
-import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
 
 class ActividadExtensions {
 	static def organizaciones(Actividad actividad) {
