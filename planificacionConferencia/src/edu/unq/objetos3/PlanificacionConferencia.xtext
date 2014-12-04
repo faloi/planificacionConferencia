@@ -13,13 +13,13 @@ Actividad:
 
 Debate:
 	'Debate ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
-		'#'name=ID titulo=STRING track=TEXTO 
+		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
 		(oradores+=Orador)+
 ;
 	
 Charla:
 	'Charla ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
-		'#'name=ID titulo=STRING track=TEXTO 
+		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
 		(oradores+=Orador)+
 ;
 
@@ -68,4 +68,4 @@ Cierre:
 ;
 
 terminal NOMBRE_ESPACIO: '*' -> '~';
-terminal TEXTO: '(' -> ')';
+terminal NOMBRE_TRACK: '(' -> ')';
