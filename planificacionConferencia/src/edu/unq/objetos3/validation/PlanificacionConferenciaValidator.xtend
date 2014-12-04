@@ -4,15 +4,16 @@
 package edu.unq.objetos3.validation
 
 import edu.unq.objetos3.planificacionConferencia.Actividad
+import edu.unq.objetos3.planificacionConferencia.ActividadAccesoria
 import edu.unq.objetos3.planificacionConferencia.Almuerzo
 import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Break
 import edu.unq.objetos3.planificacionConferencia.Charla
 import edu.unq.objetos3.planificacionConferencia.Debate
-import edu.unq.objetos3.planificacionConferencia.Descanso
-import edu.unq.objetos3.planificacionConferencia.Espacio
 import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
+import edu.unq.objetos3.planificacionConferencia.Model
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
+import java.util.Set
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.validation.Check
 
@@ -20,8 +21,6 @@ import static extension edu.unq.objetos3.ActividadExtensions.*
 import static extension edu.unq.objetos3.BloqueExtensions.*
 import static extension edu.unq.objetos3.EspacioExtensions.*
 import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
-import edu.unq.objetos3.planificacionConferencia.Model
-import java.util.Set
 
 /**
  * Custom validation rules. 
@@ -149,8 +148,12 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 		iterable.filter[it != element]
 	}
 	
-	protected def checkDuracionMinima(Descanso descanso, IntervaloTiempo duracionMinima) {
-		checkDuracionMinima(descanso.duracion, duracionMinima, PlanificacionConferenciaPackage.Literals.DESCANSO__DURACION) 
+	protected def checkDuracionMinima(ActividadAccesoria actividadAccesoria, IntervaloTiempo duracionMinima) {
+		checkDuracionMinima(
+			actividadAccesoria.duracion, 
+			duracionMinima, 
+			PlanificacionConferenciaPackage.Literals.ACTIVIDAD_ACCESORIA__DURACION
+		) 
 	}	
 	
 	protected def checkDuracionMinima(Actividad actividad, IntervaloTiempo duracionMinima) {

@@ -36,11 +36,11 @@ Espacio:
 ;
 
 ActividadesPorEspacio:
-	Bloque | Descanso
+	Bloque | ActividadAccesoria
 ;
 
-Descanso:
-	Break | Almuerzo
+ActividadAccesoria:
+	Break | Almuerzo | Registracion | Inauguracion | Cierre
 ;
 
 Bloque:
@@ -53,6 +53,18 @@ Almuerzo:
 
 Break:
 	'break' duracion=IntervaloTiempo
+;
+
+Registracion:
+	'registracion' duracion=IntervaloTiempo
+;
+
+Inauguracion:
+	'inauguracion' duracion=IntervaloTiempo
+;
+
+Cierre:
+	'cierre' duracion=IntervaloTiempo
 ;
 
 terminal NOMBRE_ESPACIO: '*' -> '~';
