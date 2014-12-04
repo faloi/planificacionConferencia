@@ -129,7 +129,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	def checkDiversidadDeOrganizacionesEnBloque(Bloque bloque) {
 		bloque.actividadesValidas.forEach [ actividad |
 			val otras = bloque.actividadesValidas.except(actividad)
-			val organizacionesRepetidas = otras.map[it.organizaciones.intersection(actividad.organizaciones)].flatten
+			val organizacionesRepetidas = otras.flatMap[it.organizaciones.intersection(actividad.organizaciones)]
 							
 			if (!organizacionesRepetidas.empty) {
 				warning(
