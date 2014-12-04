@@ -1,4 +1,4 @@
-package edu.unq.objetos3
+package edu.unq.objetos3.extensions.model
 
 import edu.unq.objetos3.planificacionConferencia.Actividad
 

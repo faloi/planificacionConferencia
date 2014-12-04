@@ -1,10 +1,10 @@
-package edu.unq.objetos3
+package edu.unq.objetos3.extensions.model
 
 import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Espacio
 
-import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
+import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {

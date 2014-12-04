@@ -13,14 +13,15 @@ import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
 import edu.unq.objetos3.planificacionConferencia.Model
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
-import java.util.Set
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.validation.Check
 
-import static extension edu.unq.objetos3.ActividadExtensions.*
-import static extension edu.unq.objetos3.BloqueExtensions.*
-import static extension edu.unq.objetos3.EspacioExtensions.*
-import static extension edu.unq.objetos3.IntervaloTiempoExtensions.*
+import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
+import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
+import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
+import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
+import static extension edu.unq.objetos3.extensions.collections.SetExtensions.*
+import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 
 /**
  * Custom validation rules. 
@@ -139,14 +140,6 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 			}
 		]
 	}			
-
-	static def <T> intersection(Set<T> one, Set<T> another) {
-		one.filter[another.contains(it)]
-	}
-	
-	static def <T> except(Iterable<T> iterable, T element) {
-		iterable.filter[it != element]
-	}
 	
 	protected def checkDuracionMinima(ActividadAccesoria actividadAccesoria, IntervaloTiempo duracionMinima) {
 		checkDuracionMinima(
