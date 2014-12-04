@@ -20,8 +20,6 @@ import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
 import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
-import static extension edu.unq.objetos3.extensions.collections.SetExtensions.*
-import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 
 /**
  * Custom validation rules. 
@@ -97,16 +95,14 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 					
 				case capacidadAprovechada > 0.9:				
 					warning('''
-						Esta actividad espera recibir mas del 90% de la capacidad de «espacio.nombre», 
-						(quizás podría reubicarse en un espacio más grande?)
+						Esta actividad espera recibir mas del 90% de la capacidad de «espacio.nombre» (quizás podría reubicarse en un espacio más grande?)
 					''', 
 					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
 					bloque.actividades.indexOf(it))				
 					
 				case capacidadAprovechada < 0.5:				
 					warning('''
-						Esta actividad espera recibir menos del 50% de la capacidad de «espacio.nombre», 
-						(quizás podría reubicarse en un espacio más chico?)
+						Esta actividad espera recibir menos del 50% de la capacidad de «espacio.nombre» (quizás podría reubicarse en un espacio más chico?)
 					''', 
 					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
 					bloque.actividades.indexOf(it))									
@@ -119,7 +115,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 		model.actividades.forEach [ actividad |
 			if (!model.espacios.exists[contiene(actividad)])
 				error(
-					"Esta actividad no está planificada!",
+					"Esta actividad no está planificada",
 					actividad, 
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__NAME)
 		]
@@ -127,16 +123,15 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	
 	@Check
 	def checkDiversidadDeOrganizacionesEnBloque(Bloque bloque) {
-		bloque.actividadesValidas.forEach [ actividad |
-			val otras = bloque.actividadesValidas.except(actividad)
-			val organizacionesRepetidas = otras.flatMap[it.organizaciones.intersection(actividad.organizaciones)]
-							
-			if (!organizacionesRepetidas.empty) {
-				warning(
-					'''En este bloque ya hay otras actividades de «organizacionesRepetidas.join(", ")»''',
-					PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
-					bloque.actividades.indexOf(actividad)
-				)
+		bloque.actividadesPorOrganizacion.forEach[organizacion, actividades |
+			if (actividades.length > 1) {
+				actividades.tail.forEach [
+					warning(
+						'''En este bloque hay más de una actividad de «organizacion»: «actividades.map[name].join(", ")»''',
+						PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES,
+						bloque.actividades.indexOf(it)
+					)					
+				]
 			}
 		]
 	}			
