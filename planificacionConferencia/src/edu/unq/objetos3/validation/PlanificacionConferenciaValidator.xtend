@@ -18,7 +18,7 @@ import org.eclipse.xtext.validation.Check
 
 import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
-import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
+import static extension edu.unq.objetos3.extensions.model.ScheduleExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
 
 /**
@@ -73,7 +73,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	@Check
 	def checkBloqueNoDuraMasDeDosHoras(Bloque bloque) {
 		if (bloque.duracion > 2.horas) 
-			error('''No puede durar más de 2 horas, pero dura «bloque.duracion.asString»''', 
+			error('''Un bloque no puede durar más de 2 horas, pero dura «bloque.duracion.asString»''', 
 				PlanificacionConferenciaPackage.Literals.BLOQUE__ACTIVIDADES)
 	}	
 	
@@ -113,7 +113,7 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	@Check
 	def checkTodasLasActividadesEstanEnElSchedule(Model model) {
 		model.actividades.forEach [ actividad |
-			if (!model.espacios.exists[contiene(actividad)])
+			if (!model.schedules.exists[contiene(actividad)])
 				error(
 					"Esta actividad no está planificada",
 					actividad, 

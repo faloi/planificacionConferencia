@@ -4,15 +4,15 @@ generate planificacionConferencia "http://www.unq.edu/objetos3/PlanificacionConf
 
 Model:
 	actividades+=Actividad*
-	espacios+=Espacio*
+	schedules+=Schedule*	
 ;
 
 Actividad:
-	Charla | Debate	
+	Charla | Debate	| Taller
 ;
 
 Debate:
-	'Debate ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
+	'Debate ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo
 		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
 		(oradores+=Orador)+
 ;
@@ -23,6 +23,16 @@ Charla:
 		(oradores+=Orador)+
 ;
 
+Taller:
+	'Taller ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
+		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
+		(oradores+=Orador)+
+;
+
+Hora:
+	hora=INT':'minutos=INT'hs'
+;
+
 IntervaloTiempo:
 	(horas=INT'h' minutos=INT'm'|horas=INT'h'|minutos=INT'm')
 ;
@@ -31,8 +41,17 @@ Orador:
 	'@'nombre=ID '-' organizacion=STRING
 ;
 
+Schedule:
+	'Schedule' fecha=Fecha
+	espacios+=Espacio*
+;
+
+Fecha:
+	dia=INT'/'mes=INT'/'anio=INT
+;
+
 Espacio:
-	nombre=NOMBRE_ESPACIO capacidad=INT ":" actividades+=ActividadesPorEspacio+
+	nombre=NOMBRE_ESPACIO capacidad=INT '~' horaInicio=Hora ":" actividades+=ActividadesPorEspacio+
 ;
 
 ActividadesPorEspacio:
