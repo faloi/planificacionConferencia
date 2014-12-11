@@ -11,8 +11,10 @@ Actividad:
 	Charla | Debate	| Taller
 ;
 
+//TODO: sacar la logica repetida con Charla y Taller
 Debate:
 	'Debate ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo
+	//TODO: mejorar este hack
 	('Keynote' keynoteHack=INT)?
 		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
 		(oradores+=Orador)+
@@ -53,7 +55,7 @@ Fecha:
 ;
 
 Espacio:
-	nombre=NOMBRE_ESPACIO capacidad=INT '~' horaInicio=Hora ":" actividades+=ActividadesPorEspacio+
+	nombre=NOMBRE_ESPACIO capacidad=INT '~' (computadoras=INT 'computadoras' '~')?  horaInicio=Hora ":" actividades+=ActividadesPorEspacio+
 ;
 
 ActividadesPorEspacio:

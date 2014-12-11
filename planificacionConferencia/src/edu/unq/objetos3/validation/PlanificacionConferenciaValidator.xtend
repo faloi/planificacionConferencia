@@ -10,6 +10,7 @@ import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Break
 import edu.unq.objetos3.planificacionConferencia.Charla
 import edu.unq.objetos3.planificacionConferencia.Debate
+import edu.unq.objetos3.planificacionConferencia.Espacio
 import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
 import edu.unq.objetos3.planificacionConferencia.Model
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
@@ -21,6 +22,7 @@ import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
 import static extension edu.unq.objetos3.extensions.model.OradorExtensions.*
+import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
 import static extension edu.unq.objetos3.extensions.model.ScheduleExtensions.*
 
 /**
@@ -189,6 +191,18 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 			}
 		]
 	}			
+	
+	@Check
+	def checkNoHayTalleresEnEspaciosSinComputadoras(Espacio espacio) {
+		if (espacio.hayTalleres && !espacio.hayComputadoras)
+			error("No se puede hacer un taller en un espacio sin computadoras", PlanificacionConferenciaPackage.Literals.ESPACIO__NOMBRE)
+	}
+
+	@Check
+	def checkNoHayCharlasNiDebatesEnAulasConComputadoras(Espacio espacio) {
+		if (espacio.hayComputadoras && espacio.hayCharlasODebates)
+			error("Las aulas con computadoras sólo se pueden usar para los talleres", PlanificacionConferenciaPackage.Literals.ESPACIO__NOMBRE)
+	}	
 	
 	protected def checkDuracionMinima(ActividadAccesoria actividadAccesoria, IntervaloTiempo duracionMinima) {
 		checkDuracionMinima(

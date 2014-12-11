@@ -4,12 +4,15 @@ import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.ActividadAccesoria
 import edu.unq.objetos3.planificacionConferencia.ActividadesPorEspacio
 import edu.unq.objetos3.planificacionConferencia.Bloque
+import edu.unq.objetos3.planificacionConferencia.Charla
+import edu.unq.objetos3.planificacionConferencia.Debate
 import edu.unq.objetos3.planificacionConferencia.Espacio
+import edu.unq.objetos3.planificacionConferencia.Taller
 
+import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
 import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
-import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 
 class EspacioExtensions {
 	static def bloques(Espacio espacio) {
@@ -36,6 +39,18 @@ class EspacioExtensions {
 		val horaInicio = espacio.horaInicio + duracionAnteriores
 		
 		new Horario(horaInicio, horaInicio + actividad.getDuracion)
+	}
+	
+	static def hayTalleres(Espacio espacio) {
+		!espacio.bloques.flatMap[actividades].filter(Taller).empty
+	}
+	
+	static def hayCharlasODebates(Espacio espacio) {
+		espacio.bloques.flatMap[actividades].exists[it instanceof Charla || it instanceof Debate]
+	}
+	
+	static def hayComputadoras(Espacio espacio) {
+		espacio.computadoras != 0
 	}
 		
 	def static dispatch getDuracion(ActividadAccesoria actividad) {
