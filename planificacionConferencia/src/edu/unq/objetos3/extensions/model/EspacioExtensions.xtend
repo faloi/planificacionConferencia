@@ -6,13 +6,18 @@ import edu.unq.objetos3.planificacionConferencia.ActividadesPorEspacio
 import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Espacio
 
+import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
 import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
 
 class EspacioExtensions {
+	static def bloques(Espacio espacio) {
+		espacio.actividades.filter(Bloque)	
+	}
+	
 	static def contiene(Espacio espacio, Actividad actividad) {
-		espacio.actividades.filter(Bloque).exists[contiene(actividad)]
+		espacio.bloques.exists[contiene(actividad)]
 	}
 	
 	static def horarioDe(Espacio espacio, ActividadesPorEspacio actividad) {

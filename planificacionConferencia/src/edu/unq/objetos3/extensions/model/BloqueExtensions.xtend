@@ -8,6 +8,7 @@ import static extension edu.unq.objetos3.extensions.collections.IterableExtensio
 import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
+import edu.unq.objetos3.planificacionConferencia.Orador
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {
@@ -51,6 +52,14 @@ class BloqueExtensions {
 	static def actividadesDeOrganizacion(Bloque bloque, String organizacion) {
 		bloque.actividadesValidas.filter[organizaciones.contains(organizacion)]
 	}
+	
+	static def actividadesDe(Bloque bloque, Orador orador) {
+		bloque.actividadesValidas.filter[tieneComoOradorA(orador)]
+	}
+	
+	static def tieneComoOradorA(Bloque bloque, Orador orador) {
+		bloque.actividadesValidas.exists[tieneComoOradorA(orador)]
+	}	
 	
 	static def horarioDe(Bloque bloque, Actividad actividad) {
 		val duracionAnteriores = bloque.actividades.takeWhile[it != actividad].duracionTotal

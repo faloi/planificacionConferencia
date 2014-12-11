@@ -18,4 +18,10 @@ class Horario {
 	def +(IntervaloTiempo duracion) {
 		new Horario(inicio + duracion, fin + duracion)
 	}
+	
+	def overlaps(Horario otro) {
+		inicio > otro.inicio && inicio < otro.fin
+		|| fin > otro.inicio && fin < otro.fin
+	}
+	
 }

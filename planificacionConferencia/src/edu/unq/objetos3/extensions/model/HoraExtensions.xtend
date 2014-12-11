@@ -14,6 +14,14 @@ class HoraExtensions {
 		newHora(minutos / 60, minutos % 60)
 	}
 
+	static def <(Hora una, Hora otra) {
+		una.enMinutos < otra.enMinutos
+	}
+	
+	static def >(Hora una, Hora otra) {
+		una.enMinutos > otra.enMinutos
+	}	
+
 	static def enMinutos(Hora hora) {
 		hora.hora * 60 + hora.minutos
 	}

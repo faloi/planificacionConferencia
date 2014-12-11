@@ -16,10 +16,12 @@ import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaPackage
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.validation.Check
 
+import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
-import static extension edu.unq.objetos3.extensions.model.ScheduleExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
+import static extension edu.unq.objetos3.extensions.model.OradorExtensions.*
+import static extension edu.unq.objetos3.extensions.model.ScheduleExtensions.*
 
 /**
  * Custom validation rules. 
@@ -46,7 +48,22 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	def checkDuracionMinimaBreak(Break break) {
 		checkDuracionMinima(break, 15.minutos)
 	}
-
+	
+	@Check
+	def checkActividadesOradorNoSeSolapan(Model model) {
+		val oradores = model.actividades.flatMap[oradores]
+		oradores.forEach [
+			val solapadas = it.actividadesSolapadasEn(model.schedules)
+			if (!solapadas.empty) {
+				//TODO seria mas interesante que el error este en el schedule, pero me caga de nuevo lo del bloque
+				error(
+					'''«nombre» tiene actividades que se solapan: «solapadas.map[name].join(", ")»''',
+					it,
+					PlanificacionConferenciaPackage.Literals.ORADOR__NOMBRE)
+			}
+		]
+	}
+	
 	@Check
 	def checkAlMenosDosOradoresEnDebate(Debate debate) {
 		if (debate.oradores.length < 2) {
