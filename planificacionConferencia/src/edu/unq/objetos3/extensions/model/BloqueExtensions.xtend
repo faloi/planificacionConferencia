@@ -8,6 +8,7 @@ import static extension edu.unq.objetos3.extensions.collections.IterableExtensio
 import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
+import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 import edu.unq.objetos3.planificacionConferencia.Orador
 
 class BloqueExtensions {
@@ -63,7 +64,9 @@ class BloqueExtensions {
 	
 	static def horarioDe(Bloque bloque, Actividad actividad) {
 		val duracionAnteriores = bloque.actividades.takeWhile[it != actividad].duracionTotal
-		bloque.horario + duracionAnteriores
+		val inicio = bloque.horario.inicio + duracionAnteriores
+		
+		new Horario(inicio, inicio + actividad.duracion)
 	}
 	
 	static def horario(Bloque bloque) {
