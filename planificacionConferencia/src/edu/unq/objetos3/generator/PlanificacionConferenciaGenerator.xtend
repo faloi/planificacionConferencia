@@ -64,7 +64,7 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 	def dispatch compileActividad(ActividadAccesoria actividad) '''
 		tr
 			td
-			td «actividad.class.name»	
+			td «actividad.class.interfaces.get(0).simpleName»	
 	'''
 	
 	def dispatch compileActividad(Bloque bloque) '''
@@ -77,9 +77,9 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 		tr
 			td «actividad.track»
 			td 
-				strong «actividad.name»
+				strong «actividad.titulo»
 				«FOR orador : actividad.oradores»
-					p «orador.nombre» - «orador.organizacion»
+					p @«orador.nombre» - «orador.organizacion»
 				«ENDFOR»	
 	'''	
 }
