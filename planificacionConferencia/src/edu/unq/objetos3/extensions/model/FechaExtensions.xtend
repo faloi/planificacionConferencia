@@ -1,10 +1,8 @@
 package edu.unq.objetos3.extensions.model
 
 import edu.unq.objetos3.planificacionConferencia.Fecha
-import java.util.Date
-import java.util.Calendar
-import java.text.SimpleDateFormat
 import edu.unq.objetos3.planificacionConferencia.PlanificacionConferenciaFactory
+import java.util.Calendar
 
 class FechaExtensions {
 	def static asString(Fecha fecha) '''
@@ -28,7 +26,13 @@ class FechaExtensions {
 	}
 	
 	def static asDate(Fecha fecha) {
-		new Date(fecha.anio, fecha.mes, fecha.dia)
+		val calendar = Calendar.getInstance() => [
+			set(Calendar.YEAR, fecha.anio)
+			set(Calendar.MONTH, fecha.mes - 1)
+			set(Calendar.DAY_OF_MONTH, fecha.dia)
+		]
+		
+		calendar.time		
 	}
 	
 	static def newFecha(int dia, int mes, int anio) {
