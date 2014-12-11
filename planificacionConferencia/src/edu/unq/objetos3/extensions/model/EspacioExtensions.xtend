@@ -23,6 +23,10 @@ class EspacioExtensions {
 	static def cantidadDeVecesPlanificada(Espacio espacio, Actividad actividad) {
 		espacio.bloques.sum[cantidadDeVecesPlanificada(actividad)]
 	}
+
+	static def actividadesSolapadasCon(Espacio espacio, Actividad actividad) {
+		espacio.bloques.flatMap[actividadesSolapadasCon(actividad)]
+	}
 	
 	static def horarioDe(Espacio espacio, ActividadesPorEspacio actividad) {
 		val duracionAnteriores = espacio.actividades

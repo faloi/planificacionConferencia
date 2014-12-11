@@ -15,6 +15,10 @@ class ScheduleExtensions {
 	static def cantidadDeVecesPlanificada(Schedule schedule, Actividad actividad) {
 		schedule.espacios.sum[cantidadDeVecesPlanificada(actividad)]
 	}	
+
+	static def actividadesSolapadasCon(Schedule schedule, Actividad actividad) {
+		schedule.espacios.flatMap[actividadesSolapadasCon(actividad)]
+	}		
 	
 	static def bloqueDe(Schedule schedule, Actividad actividad) {
 		schedule.espacios.flatMap[bloques].findFirst[contiene(actividad)]

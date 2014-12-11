@@ -49,6 +49,10 @@ class BloqueExtensions {
 		bloque.actividades.filter[it == actividad].length
 	}	
 	
+	static def actividadesSolapadasCon(Bloque bloque, Actividad actividad) {
+		bloque.actividades.except(actividad).filter[it.seSolapaCon(actividad)]
+	}		
+	
 	static def actividadesPorOrganizacion(Bloque bloque) {
 		bloque.organizaciones.toInvertedMap[
 			bloque.actividadesDeOrganizacion(it)			
@@ -78,7 +82,7 @@ class BloqueExtensions {
 		bloque.espacio.horarioDe(bloque)
 	}
 	
-	static def duracionTotal(Iterable<Actividad> actividades) {
+	static def IntervaloTiempo duracionTotal(Iterable<Actividad> actividades) {
 		actividades.fold(0.minutos) [acum, elem | acum + elem.duracion]
 	}
 }

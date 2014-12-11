@@ -13,6 +13,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
+import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
 import static extension edu.unq.objetos3.extensions.model.FechaExtensions.*
 import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
@@ -76,16 +77,20 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 		«ENDFOR»	
 	'''
 	
-	def compile(Actividad actividad, Bloque bloque) '''
-		tr
-		«IF bloque.esLaPrimera(actividad)»
-			td(rowspan="«bloque.actividades.length»") «actividad.track»
-		«ENDIF»
-			td «bloque.horarioDe(actividad).inicio.asString»
-			td 
-				strong «actividad.titulo»
-				«FOR orador : actividad.oradores»
-					p @«orador.nombre» - «orador.organizacion»
-				«ENDFOR»	
-	'''	
+	def compile(Actividad actividad, Bloque bloque) {
+		val cssKeynote = '''«IF actividad.esKeynote»(class="danger")«ENDIF»'''
+		
+		'''
+			tr
+			«IF bloque.esLaPrimera(actividad)»
+				td(rowspan="«bloque.actividades.length»") «actividad.track»
+			«ENDIF»
+				td«cssKeynote» «bloque.horarioDe(actividad).inicio.asString»
+				td«cssKeynote» 
+					strong «actividad.titulo»
+					«FOR orador : actividad.oradores»
+						p @«orador.nombre» - «orador.organizacion»
+					«ENDFOR»	
+		'''
+	}	
 }

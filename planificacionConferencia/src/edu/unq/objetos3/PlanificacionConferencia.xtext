@@ -13,12 +13,14 @@ Actividad:
 
 Debate:
 	'Debate ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo
+	('Keynote' keynoteHack=INT)?
 		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
 		(oradores+=Orador)+
 ;
 	
 Charla:
-	'Charla ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo 
+	'Charla ~' capacidadMaxima=INT '~' duracion=IntervaloTiempo
+	('Keynote' keynoteHack=INT)? 
 		'#'name=ID titulo=STRING track=NOMBRE_TRACK 
 		(oradores+=Orador)+
 ;

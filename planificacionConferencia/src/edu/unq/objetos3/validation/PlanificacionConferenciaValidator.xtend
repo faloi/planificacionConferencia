@@ -110,6 +110,21 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	}	
 	
 	@Check
+	def checkNoHayActividadesALaParDeUnKeynote(Model model) {
+		model.actividades.filter[esKeynote].forEach [actividad |
+			val solapadas = model.schedules.flatMap[actividadesSolapadasCon(actividad)]
+			
+			if (!solapadas.empty) {
+				//TODO seria mas interesante que el error este en el schedule, pero me caga de nuevo lo del bloque
+				error(
+					'''«actividad.name» está definida como keynote, pero se solapa con: «solapadas.map[name].join(", ")»''',
+					actividad,
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__NAME)
+			}
+		]
+	}
+	
+	@Check
 	def checkCantidadAsistentes(Bloque bloque) {
 		val espacio = bloque.espacio
 		
