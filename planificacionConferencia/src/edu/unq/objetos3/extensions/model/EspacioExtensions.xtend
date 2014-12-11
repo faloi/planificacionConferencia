@@ -6,7 +6,6 @@ import edu.unq.objetos3.planificacionConferencia.ActividadesPorEspacio
 import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Espacio
 
-import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
 import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
@@ -30,10 +29,11 @@ class EspacioExtensions {
 		new Horario(horaInicio, horaInicio + actividad.getDuracion)
 	}
 		
-	def static getDuracion(ActividadesPorEspacio actividad) {
-		if (actividad instanceof ActividadAccesoria)
-			(actividad as ActividadAccesoria).duracion
-		else
-			(actividad as Bloque).duracion
+	def static dispatch getDuracion(ActividadAccesoria actividad) {
+		actividad.duracion
+	}
+	
+	def static dispatch getDuracion(Bloque actividad) {
+		actividad.duracion
 	}
 }
