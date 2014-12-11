@@ -8,7 +8,6 @@ import static extension edu.unq.objetos3.extensions.collections.IterableExtensio
 import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
 import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
-import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {
@@ -53,13 +52,13 @@ class BloqueExtensions {
 		bloque.actividadesValidas.filter[organizaciones.contains(organizacion)]
 	}
 	
-	static def horaInicioDe(Bloque bloque, Actividad actividad) {
+	static def horarioDe(Bloque bloque, Actividad actividad) {
 		val duracionAnteriores = bloque.actividades.takeWhile[it != actividad].duracionTotal
-		bloque.horaInicio + duracionAnteriores
+		bloque.horario + duracionAnteriores
 	}
 	
-	static def horaInicio(Bloque bloque) {
-		bloque.espacio.horaInicioDe(bloque)
+	static def horario(Bloque bloque) {
+		bloque.espacio.horarioDe(bloque)
 	}
 	
 	static def duracionTotal(Iterable<Actividad> actividades) {

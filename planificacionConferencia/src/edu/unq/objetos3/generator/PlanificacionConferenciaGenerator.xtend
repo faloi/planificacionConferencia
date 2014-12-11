@@ -66,7 +66,7 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 	def dispatch compileActividad(ActividadAccesoria actividad, Espacio espacio) '''
 		tr.success
 			td
-			td «espacio.horaInicioDe(actividad).asString»
+			td «espacio.horarioDe(actividad).inicio.asString»
 			td «actividad.class.interfaces.get(0).simpleName»	
 	'''
 	
@@ -81,7 +81,7 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 		«IF bloque.esLaPrimera(actividad)»
 			td(rowspan="«bloque.actividades.length»") «actividad.track»
 		«ENDIF»
-			td «bloque.horaInicioDe(actividad).asString»
+			td «bloque.horarioDe(actividad).inicio.asString»
 			td 
 				strong «actividad.titulo»
 				«FOR orador : actividad.oradores»
