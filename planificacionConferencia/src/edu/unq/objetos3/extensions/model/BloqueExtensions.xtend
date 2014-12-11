@@ -3,13 +3,14 @@ package edu.unq.objetos3.extensions.model
 import edu.unq.objetos3.planificacionConferencia.Actividad
 import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Espacio
+import edu.unq.objetos3.planificacionConferencia.IntervaloTiempo
+import edu.unq.objetos3.planificacionConferencia.Orador
 
 import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
 import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
-import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
 import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
-import edu.unq.objetos3.planificacionConferencia.Orador
+import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {
@@ -20,7 +21,7 @@ class BloqueExtensions {
 		bloque.actividadesValidas.map[track].toSet
 	}	
 	
-	static def duracion(Bloque bloque) {
+	static def IntervaloTiempo duracion(Bloque bloque) {
 		bloque.actividadesValidas.duracionTotal
 	}
 	
@@ -43,6 +44,10 @@ class BloqueExtensions {
 	static def contiene(Bloque bloque, Actividad actividad) {
 		bloque.actividades.contains(actividad)
 	}
+	
+	static def cantidadDeVecesPlanificada(Bloque bloque, Actividad actividad) {
+		bloque.actividades.filter[it == actividad].length
+	}	
 	
 	static def actividadesPorOrganizacion(Bloque bloque) {
 		bloque.organizaciones.toInvertedMap[

@@ -143,15 +143,22 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	}
 	
 	@Check
-	def checkTodasLasActividadesEstanEnElSchedule(Model model) {
+	def checkActividadesEstanPlanificadasSoloUnaVez(Model model) {
 		model.actividades.forEach [ actividad |
-			if (!model.schedules.exists[contiene(actividad)])
+			val vecesPlanificada = model.schedules.sum[cantidadDeVecesPlanificada(actividad)]
+			
+			if (vecesPlanificada == 0)
 				error(
 					"Esta actividad no está planificada",
 					actividad, 
 					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__NAME)
+			else if (vecesPlanificada > 1)
+				error(
+					'''Esta actividad está planificada «vecesPlanificada» veces''',
+					actividad, 
+					PlanificacionConferenciaPackage.Literals.ACTIVIDAD__NAME)
 		]
-	}		
+	}
 	
 	@Check
 	def checkDiversidadDeOrganizacionesEnBloque(Bloque bloque) {
