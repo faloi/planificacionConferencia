@@ -1,13 +1,14 @@
 package edu.unq.objetos3.extensions.model
 
 import edu.unq.objetos3.planificacionConferencia.Actividad
-
 import edu.unq.objetos3.planificacionConferencia.Bloque
 import edu.unq.objetos3.planificacionConferencia.Espacio
 
-import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
-import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
 import static extension edu.unq.objetos3.extensions.collections.IterableExtensions.*
+import static extension edu.unq.objetos3.extensions.model.ActividadExtensions.*
+import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
+import static extension edu.unq.objetos3.extensions.model.IntervaloTiempoExtensions.*
+import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 
 class BloqueExtensions {
 	static def actividadesValidas(Bloque bloque) {
@@ -19,7 +20,11 @@ class BloqueExtensions {
 	}	
 	
 	static def duracion(Bloque bloque) {
-		bloque.actividadesValidas.fold(0.minutos) [acum, elem | acum + elem.duracion]
+		bloque.actividadesValidas.duracionTotal
+	}
+	
+	static def esLaPrimera(Bloque bloque, Actividad actividad) {
+		bloque.actividades.indexOf(actividad) == 0
 	}
 	
 	static def organizaciones(Bloque bloque) {
@@ -46,5 +51,18 @@ class BloqueExtensions {
 	
 	static def actividadesDeOrganizacion(Bloque bloque, String organizacion) {
 		bloque.actividadesValidas.filter[organizaciones.contains(organizacion)]
+	}
+	
+	static def horaInicioDe(Bloque bloque, Actividad actividad) {
+		val duracionAnteriores = bloque.actividades.takeWhile[it != actividad].duracionTotal
+		bloque.horaInicio + duracionAnteriores
+	}
+	
+	static def horaInicio(Bloque bloque) {
+		bloque.espacio.horaInicioDe(bloque)
+	}
+	
+	static def duracionTotal(Iterable<Actividad> actividades) {
+		actividades.fold(0.minutos) [acum, elem | acum + elem.duracion]
 	}
 }

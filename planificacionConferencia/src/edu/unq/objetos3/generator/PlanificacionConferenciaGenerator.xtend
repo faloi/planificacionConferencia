@@ -3,16 +3,19 @@
  */
 package edu.unq.objetos3.generator
 
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.generator.IGenerator
-import org.eclipse.xtext.generator.IFileSystemAccess
-import edu.unq.objetos3.planificacionConferencia.Schedule
-
-import static extension edu.unq.objetos3.extensions.model.FechaExtensions.*
-import edu.unq.objetos3.planificacionConferencia.Espacio
-import edu.unq.objetos3.planificacionConferencia.ActividadAccesoria
 import edu.unq.objetos3.planificacionConferencia.Actividad
+import edu.unq.objetos3.planificacionConferencia.ActividadAccesoria
 import edu.unq.objetos3.planificacionConferencia.Bloque
+import edu.unq.objetos3.planificacionConferencia.Espacio
+import edu.unq.objetos3.planificacionConferencia.Schedule
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.xtext.generator.IGenerator
+
+import static extension edu.unq.objetos3.extensions.model.BloqueExtensions.*
+import static extension edu.unq.objetos3.extensions.model.EspacioExtensions.*
+import static extension edu.unq.objetos3.extensions.model.FechaExtensions.*
+import static extension edu.unq.objetos3.extensions.model.HoraExtensions.*
 
 /**
  * Generates code from your model files on save.
@@ -44,8 +47,7 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 	'''
 
 	def compile(Schedule schedule) '''
-		h2 «schedule.fecha.diaDeSemana»
-			small «schedule.fecha.asString»
+		h2 «schedule.fecha.diaDeSemana» «schedule.fecha.asString»
 			
 		«FOR espacio : schedule.espacios»
 			«compile(espacio)»
@@ -57,17 +59,18 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 		table.table.table-hover
 			tbody
 				«FOR actividad : espacio.actividades»
-					«compileActividad(actividad)»
+					«compileActividad(actividad, espacio)»
 				«ENDFOR»				
 	'''
 	
-	def dispatch compileActividad(ActividadAccesoria actividad) '''
+	def dispatch compileActividad(ActividadAccesoria actividad, Espacio espacio) '''
 		tr.success
 			td
+			td «espacio.horaInicioDe(actividad).asString»
 			td «actividad.class.interfaces.get(0).simpleName»	
 	'''
 	
-	def dispatch compileActividad(Bloque bloque) '''
+	def dispatch compileActividad(Bloque bloque, Espacio _) '''
 		«FOR actividad : bloque.actividades»
 			«actividad.compile(bloque)»
 		«ENDFOR»	
@@ -75,9 +78,10 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 	
 	def compile(Actividad actividad, Bloque bloque) '''
 		tr
-			«IF bloque.actividades.indexOf(actividad) == 0»
-				td(rowspan="«bloque.actividades.length»") «actividad.track»
-			«ENDIF»
+		«IF bloque.esLaPrimera(actividad)»
+			td(rowspan="«bloque.actividades.length»") «actividad.track»
+		«ENDIF»
+			td «bloque.horaInicioDe(actividad).asString»
 			td 
 				strong «actividad.titulo»
 				«FOR orador : actividad.oradores»
