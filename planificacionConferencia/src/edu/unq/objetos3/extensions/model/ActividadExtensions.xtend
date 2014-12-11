@@ -16,6 +16,11 @@ class ActividadExtensions {
 		bloque.horarioDe(actividad).overlaps(bloqueOtra.horarioDe(otra))
 	}
 	
+	//TODO Horrible, pero no logre llegar al bloque desde la actividad :(
+	static def esAdyacenteCon(Actividad actividad, Actividad otra, Bloque bloque, Bloque bloqueOtra) {
+		bloque.horarioDe(actividad).abuts(bloqueOtra.horarioDe(otra))
+	}
+	
 	static def tieneComoOradorA(Actividad actividad, Orador orador) {
 		actividad.oradores.exists[nombre == orador.nombre]
 	}

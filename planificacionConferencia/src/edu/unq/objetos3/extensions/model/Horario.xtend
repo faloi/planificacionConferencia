@@ -24,6 +24,10 @@ class Horario {
 		|| fin > otro.inicio && fin <= otro.fin
 	}
 	
+	def abuts(Horario otro) {
+		!overlaps(otro) && (inicio == otro.fin || fin == otro.inicio)
+	}	
+	
 	override toString() '''
 		«inicio.asString» - «fin.asString»
 	'''

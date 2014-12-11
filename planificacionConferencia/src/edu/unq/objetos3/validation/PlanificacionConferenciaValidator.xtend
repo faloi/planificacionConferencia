@@ -65,6 +65,21 @@ class PlanificacionConferenciaValidator extends AbstractPlanificacionConferencia
 	}
 	
 	@Check
+	def checkActividadesAdyacentesPorOrador(Model model) {
+		val oradores = model.actividades.flatMap[oradores]
+		oradores.forEach [
+			val adyacentes = it.actividadesAdyacentesEn(model.schedules)
+			if (!adyacentes.empty) {
+				//TODO seria mas interesante que el error este en el schedule, pero me caga de nuevo lo del bloque
+				warning(
+					'''«nombre» tiene actividades adyacentes: «adyacentes.map[name].join(", ")»''',
+					it,
+					PlanificacionConferenciaPackage.Literals.ORADOR__NOMBRE)
+			}
+		]
+	}	
+	
+	@Check
 	def checkAlMenosDosOradoresEnDebate(Debate debate) {
 		if (debate.oradores.length < 2) {
 			error('Un debate tiene que tener al menos 2 oradores', 
