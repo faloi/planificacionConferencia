@@ -20,6 +20,18 @@ class HoraExtensions {
 	
 	static def >(Hora una, Hora otra) {
 		una.enMinutos > otra.enMinutos
+	}
+	
+	static def ==(Hora una, Hora otra) {
+		una.enMinutos == otra.enMinutos
+	}
+	
+	static def <=(Hora una, Hora otra) {
+		una < otra || una == otra
+	}
+	
+	static def >=(Hora una, Hora otra) {
+		una > otra || una == otra
 	}	
 
 	static def enMinutos(Hora hora) {

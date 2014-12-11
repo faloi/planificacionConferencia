@@ -20,8 +20,11 @@ class Horario {
 	}
 	
 	def overlaps(Horario otro) {
-		inicio > otro.inicio && inicio < otro.fin
-		|| fin > otro.inicio && fin < otro.fin
+		inicio >= otro.inicio && inicio < otro.fin
+		|| fin > otro.inicio && fin <= otro.fin
 	}
 	
+	override toString() '''
+		«inicio.asString» - «fin.asString»
+	'''
 }
