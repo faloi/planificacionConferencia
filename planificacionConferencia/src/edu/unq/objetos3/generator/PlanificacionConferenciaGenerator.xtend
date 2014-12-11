@@ -62,20 +62,22 @@ class PlanificacionConferenciaGenerator implements IGenerator {
 	'''
 	
 	def dispatch compileActividad(ActividadAccesoria actividad) '''
-		tr
+		tr.success
 			td
 			td «actividad.class.interfaces.get(0).simpleName»	
 	'''
 	
 	def dispatch compileActividad(Bloque bloque) '''
 		«FOR actividad : bloque.actividades»
-			«compile(actividad)»
-		«ENDFOR»			
+			«actividad.compile(bloque)»
+		«ENDFOR»	
 	'''
 	
-	def compile(Actividad actividad) '''
+	def compile(Actividad actividad, Bloque bloque) '''
 		tr
-			td «actividad.track»
+			«IF bloque.actividades.indexOf(actividad) == 0»
+				td(rowspan="«bloque.actividades.length»") «actividad.track»
+			«ENDIF»
 			td 
 				strong «actividad.titulo»
 				«FOR orador : actividad.oradores»
