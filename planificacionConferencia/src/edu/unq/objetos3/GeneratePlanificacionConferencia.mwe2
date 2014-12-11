@@ -5,7 +5,7 @@ import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 
 var grammarURI = "classpath:/edu/unq/objetos3/PlanificacionConferencia.xtext"
-var fileExtensions = "conferencia"
+var fileExtensions = "dsl"
 var projectName = "planificacionConferencia"
 var runtimeProject = "../${projectName}"
 var generateXtendStub = true
